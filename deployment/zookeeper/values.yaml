@@ -1,0 +1,17 @@
+replicaCount: 3
+
+service:
+  protocol: TCP
+  type: ClusterIP
+  port: 9092
+
+spec:
+  namespace: kafka
+  image:
+    repository: wurstmeister/zookeeper
+    tag: latest
+    pullPolicy: IfNotPresent
+  storage:
+    size: 5Gi
+    storageClass: standard
+  

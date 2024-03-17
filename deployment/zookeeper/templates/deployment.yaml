@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.name }}
+  namespace: {{ .Values.spec.namespace }}
+spec:
+  serviceName: {{ .Release.name }}
+  replicas: 3
+  selector:
+    matchLabels:
+      app: {{ .Release.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.name }}
+    spec:
+      containers:
+        - name: {{ .Release.name }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          env:
+          {{ include "kafka.envVars" .}}
+          ports:
+            - containerPort: 2181
+            - containerPort: 2888
+            - containerPort: 3888
+          volumeMounts:
+            - name: {{ .Release.name }}-data
+              mountPath: /data
+
+      volumes:
+        - name: {{ .Release.name }}-data
+          emptyDir: {}
+

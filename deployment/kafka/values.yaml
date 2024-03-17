@@ -1,0 +1,22 @@
+replicaCount: 3
+
+service:
+  protocol: TCP
+  type: ClusterIP
+  port: 9092
+
+spec:
+  image:
+    repository: wurstmeister/zookeeper
+    tag: latest
+    pullPolicy: IfNotPresent
+  storage:
+    size: 5Gi
+    storageClass: standard
+
+kafka:
+  replicas: 3
+  topic:
+    name: health_checks_topic
+    partitions: 3
+    replicationFactor: 2

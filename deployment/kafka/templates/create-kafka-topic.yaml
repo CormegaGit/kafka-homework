@@ -1,0 +1,22 @@
+# templates/create-topic.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-kafka-topic
+spec:
+  template:
+    metadata:
+      name: create-kafka-topic
+    spec:
+      containers:
+      - name: create-kafka-topic
+        image: confluentinc/cp-kafka:latest
+        command: ["/bin/bash", "-c"]
+        args:
+        - |
+          kafka-topics --create \
+            --zookeeper zookeeper:2181 \
+            --replication-factor {{ .Values.kafka.topic.replicationFactor }} \
+            --partitions {{ .Values.kafka.topic.partitions }} \
+            --topic {{ .Values.kafka.topic.name }}
+      restartPolicy: Never

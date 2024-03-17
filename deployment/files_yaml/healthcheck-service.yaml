@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: healthcheck-service
+  namespace: kafka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: healthcheck-service
+  template:
+    metadata:
+      labels:
+        app: healthcheck-service
+    spec:
+      containers:
+      - name: healthcheck-service
+        image: py_script:latest
+        command: ["python3", "health_check_service.py"]
+        resources:
+          requests:
+            memory: "1000Mi"
+            cpu: "500m"
